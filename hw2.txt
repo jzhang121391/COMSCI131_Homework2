@@ -1,0 +1,41 @@
+For convert_grammar, I created a helper function that accepts a Homework 1
+styled grammar and an element which is supposed to be one of the left hand side
+nonterminals. The helper function, get_all_t, matches the inputted grammar with
+an empty and filled list. If the list is empty, an empty list returned. If not,
+the inputted nonterminal with the left hand side of the first pair in the given
+grammar. If it is a match, then it will append the right hand side to the
+results of get_all_t ran with the remaining tail as the new list of grammar.
+If it is not a match, then the function still proceeds with the tail as the new
+grammar but without any appending.
+
+parse_prefix uses the help of three functions: the top-level matcher function,
+a function to check one of the right hand rules and follow it, and a third
+function to iterate through the list of right hand rules. The matcher function
+is what carries the parameters that are passed into the two subsequent
+functions.
+
+Beginning with check_rhs which accepts a grammar, right hand rules, acceptor,
+derivation, and frgament, it checks to see whether or not the list of fragments
+is empty. If so, and the right hand rules with which the fragments were
+supposed to be compared with is also empty, the acceptor is called upon.
+Otherwise, None is returned. However, if there are elements in frag, we
+compare them individually with the elements from the right hand rules by first
+checking if there are any and if so, what their types are. If the right hand
+rules is empty, then the acceptor is again called upon. However, if the first
+element which the first element of frag is being compared to is a nonterminal,
+matcher is invoked with the said right hand rule element as the new
+nonterminal and (check_rhs gram n_tail acc) as the new acceptor. If the frag
+element finds its nonterminal match, run check_rhs with the remaining right
+rules and remaining fragments. If it is a terminal but not a match, then None is
+returned.
+
+With check_rhs written, we can apply it to the rest of the elements in
+right hand rules. check_rest accepts a grammar, nonterminal, a list of right
+hand rules, an acceptor, derivative, and fragment. The function first checks
+to see if there are any elements at all in right hand rules. If not, there is
+no path to traverse and None is returned. If right hand side is not empty, 
+check_rhs is invoked with the paths continually being concatonated onto the
+derivative parameter. If there is a result, Some(a, b), that is what will be
+returned. If the path was traversed but no match returned, check_rest is ran
+on the remaining elements of right hand side, thereby iterating through the
+list in order and traversing the paths instructed.
